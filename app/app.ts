@@ -1,10 +1,13 @@
 import { NegociacaoController } from "./controllers/NegociacaoController.js";
-import { NegociacaoView } from "./views/NegociacaoView.js";
 
 const negociacaoController = new NegociacaoController();
 const form = document.querySelector('form');
-form.addEventListener('submit', event => {
-    event.preventDefault();
+if (form) {
+    form.addEventListener('submit', event => {
+        event.preventDefault();
 
-    negociacaoController.adiciona();
-});
+        negociacaoController.adiciona();
+    });
+} else {
+    throw new Error('Não foi possível inicializar a aplicação, verifique se o html tem o form.');
+}

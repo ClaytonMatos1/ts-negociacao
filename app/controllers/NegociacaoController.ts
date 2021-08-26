@@ -9,21 +9,23 @@ export class NegociacaoController {
     private inputQuantidade: HTMLInputElement;
     private inputValor: HTMLInputElement;
     private negociacoes: Negociacoes = new Negociacoes();
-    private negociacaoView: NegociacaoView = new NegociacaoView('#negociacaoView');
+    private negociacaoView: NegociacaoView = new NegociacaoView('#negociacaoView', true);
     private mensagemView: MensagemView = new MensagemView('#mensagemView');
-    private readonly DOMINGO: number = 0;
-    private readonly SABADO: number = 6;
 
     constructor() {
-        this.inputData = document.querySelector('#data');
-        this.inputQuantidade = document.querySelector('#quantidade');
-        this.inputValor = document.querySelector('#valor');
+        this.inputData = document.querySelector('#data') as HTMLInputElement;
+        this.inputQuantidade = document.querySelector('#quantidade') as HTMLInputElement;
+        this.inputValor = document.querySelector('#valor') as HTMLInputElement;
         this.negociacaoView.update(this.negociacoes);
 
     }
 
     public adiciona(): void {
-        const negociacao: Negociacao = this.criaNegociacao();
+        const negociacao: Negociacao = Negociacao.criaDe(
+            this.inputData.value,
+            this.inputQuantidade.value,
+            this.inputValor.value
+        );
         if (!this.ehDiaUtil(negociacao.data)) {
             this.mensagemView.update('Apenas negociações em dia úteis são aceitas!');
             this.limparFormulario();
@@ -37,15 +39,6 @@ export class NegociacaoController {
 
     private ehDiaUtil(data: Date): boolean {
         return data.getDay() !== DiasDaSemana.DOMINGO && data.getDay() !== DiasDaSemana.SABADO;
-    }
-
-    public criaNegociacao(): Negociacao {
-        const exp = /-/g;
-        return new Negociacao(
-            new Date(this.inputData.value.replace(exp, ',')),
-            parseInt(this.inputQuantidade.value),
-            parseFloat(this.inputValor.value)
-        );
     }
 
     private limparFormulario(): void {
