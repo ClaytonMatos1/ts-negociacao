@@ -1,3 +1,5 @@
+import { logarTempo } from "../decorators/LogarTempo.js";
+
 export abstract class View<T> {
     protected elemento: HTMLElement;
     private escapar: boolean = false;
@@ -16,6 +18,7 @@ export abstract class View<T> {
 
     protected abstract template(model: T): string;
 
+    @logarTempo()
     public update(model: T): void {
         let template = this.template(model);
         if (this.escapar) {

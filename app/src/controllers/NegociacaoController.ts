@@ -1,3 +1,4 @@
+import { logarTempo } from "../decorators/LogarTempo.js";
 import { DiasDaSemana } from "../enums/DiasDaSemana.js";
 import { Negociacao } from "../models/Negociacao.js";
 import { Negociacoes } from "../models/Negociacoes.js";
@@ -20,6 +21,7 @@ export class NegociacaoController {
 
     }
 
+    @logarTempo()
     public adiciona(): void {
         const negociacao: Negociacao = Negociacao.criaDe(
             this.inputData.value,
