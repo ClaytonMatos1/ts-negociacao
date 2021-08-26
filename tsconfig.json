@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "dist/js",
+        "outDir": "app/dist/js",
         "target": "ES6",
         "noEmitOnError": true,
         "importsNotUsedAsValues": "remove",
@@ -8,5 +8,5 @@
         "removeComments": true,
         "strictNullChecks": true
     },
-    "include": ["app/**/*"]
+    "include": ["app/src/**/*"]
 }
