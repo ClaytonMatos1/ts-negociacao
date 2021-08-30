@@ -4,13 +4,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { Inspect } from "../decorators/Inspect.js";
 import { logarTempo } from "../decorators/LogarTempo.js";
 export class View {
-    constructor(seletor, escapar) {
+    constructor(seletor) {
         this.escapar = false;
-        if (escapar) {
-            this.escapar = escapar;
-        }
         const elemento = document.querySelector(seletor);
         if (elemento) {
             this.elemento = elemento;
@@ -21,12 +19,10 @@ export class View {
     }
     update(model) {
         let template = this.template(model);
-        if (this.escapar) {
-            template = template.replace(/<script>[\s\S]*?<\/script>/, '');
-        }
         this.elemento.innerHTML = template;
     }
 }
 __decorate([
-    logarTempo()
+    logarTempo(),
+    Inspect
 ], View.prototype, "update", null);

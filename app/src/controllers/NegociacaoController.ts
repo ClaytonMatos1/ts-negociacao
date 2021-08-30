@@ -1,27 +1,32 @@
+import { DomInjector } from "../decorators/DomInjector.js";
+import { Inspect } from "../decorators/Inspect.js";
 import { logarTempo } from "../decorators/LogarTempo.js";
 import { DiasDaSemana } from "../enums/DiasDaSemana.js";
 import { Negociacao } from "../models/Negociacao.js";
 import { Negociacoes } from "../models/Negociacoes.js";
+import { NegociacaoService } from "../services/NegociacaoService.js";
 import { MensagemView } from "../views/MensagemView.js";
 import { NegociacaoView } from "../views/NegociacaoView.js";
 
 export class NegociacaoController {
+    @DomInjector('#data')
     private inputData: HTMLInputElement;
+    @DomInjector('#quantidade')
     private inputQuantidade: HTMLInputElement;
+    @DomInjector('#valor')
     private inputValor: HTMLInputElement;
     private negociacoes: Negociacoes = new Negociacoes();
-    private negociacaoView: NegociacaoView = new NegociacaoView('#negociacaoView', true);
+    private negociacaoView: NegociacaoView = new NegociacaoView('#negociacaoView');
     private mensagemView: MensagemView = new MensagemView('#mensagemView');
+    private negociacaoService: NegociacaoService = new NegociacaoService();
 
     constructor() {
-        this.inputData = document.querySelector('#data') as HTMLInputElement;
-        this.inputQuantidade = document.querySelector('#quantidade') as HTMLInputElement;
-        this.inputValor = document.querySelector('#valor') as HTMLInputElement;
         this.negociacaoView.update(this.negociacoes);
 
     }
 
-    @logarTempo()
+    @Inspect
+    @logarTempo(true)
     public adiciona(): void {
         const negociacao: Negociacao = Negociacao.criaDe(
             this.inputData.value,
@@ -54,5 +59,16 @@ export class NegociacaoController {
     private atualizaView(): void {
         this.negociacaoView.update(this.negociacoes);
         this.mensagemView.update('Negociação adicionada com sucesso!');
+    }
+
+    public importarDados(): void {
+        console.log('importando dados');
+        this.negociacaoService.obterNegociacoesDia()
+            .then(negociacoesHoje => {
+                for (let negociacao of negociacoesHoje) {
+                    this.negociacoes.adiciona(negociacao);
+                }
+                this.negociacaoView.update(this.negociacoes);
+            });
     }
 }
